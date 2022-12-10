@@ -1,10 +1,9 @@
-const COLOR_MODE_KEY = 'color-mode';
-const INITIAL_COLOR_MODE_CSS_PROP = '--initial-color-mode';
+import { COLOR_MODE_KEY, INITIAL_COLOR_MODE_CSS_PROP, themeProperties } from './theme';
 
-function setColorsByTheme() {
-  const modeProperties = '[modeProperties]';
-  const colorModeKey = '[colorModeKey]';
-  const colorModeCssProp = '[colorModeCssProp]';
+export function setColorsByTheme() {
+  const modeProperties = '[MODEPROPERTIES]';
+  const colorModeKey = '[COLORMODEKEY]';
+  const colorModeCssProp = '[COLORMODECSSPROP]';
 
   const mql = window.matchMedia('(prefers-color-scheme: dark)');
   const prefersDarkFromMq = mql.matches;
@@ -33,11 +32,15 @@ function setColorsByTheme() {
 }
 
 const ScriptTag = () => {
-  const codeToRunOnClient = `(function() {
-  alert("다크모드 개선하자!");
-})()`;
+  const stringifyFn = String(setColorsByTheme)
+    // eslint-disable-next-line quotes
+    .replace('"[MODEPROPERTIES]"', JSON.stringify(themeProperties))
+    .replace('[COLORMODEKEY]', COLOR_MODE_KEY)
+    .replace('[COLORMODECSSPROP]', INITIAL_COLOR_MODE_CSS_PROP);
 
-  return <script dangerouslySetInnerHTML={{ __html: codeToRunOnClient }} />;
+  const fnToRunOnClient = `(${stringifyFn})()`;
+
+  return <script dangerouslySetInnerHTML={{ __html: fnToRunOnClient }} />;
 };
 
-export { ScriptTag };
+export default ScriptTag;
