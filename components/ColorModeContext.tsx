@@ -1,22 +1,5 @@
-import { ReactNode, createContext, useEffect, useContext, useState } from 'react';
-
-const getInitialColorMode = () => {
-  const persistedColorPreference = window.localStorage.getItem('color-mode');
-  const hasPersistedPreference = typeof persistedColorPreference === 'string';
-
-  if (hasPersistedPreference) {
-    return persistedColorPreference;
-  }
-
-  const mql = window.matchMedia('(prefers-color-scheme: dark)');
-  const hasMediaQueryPreference = typeof mql.matches === 'boolean';
-
-  if (hasMediaQueryPreference) {
-    return mql.matches ? 'dark' : 'light';
-  }
-
-  return 'dark';
-};
+import { ReactNode, createContext, useEffect, useRef, useContext, useState } from 'react';
+import useMediaQuery from '../hooks/useMediaQuery';
 
 interface ColorModeContextValue {
   colorMode: string | null;
@@ -26,12 +9,31 @@ interface ColorModeContextValue {
 const ColorModeContext = createContext<ColorModeContextValue | null>(null);
 
 const ColorModeProvider = ({ children }: { children: ReactNode }) => {
-  const [colorMode, setRawColorMode] = useState(getInitialColorMode);
+  const [colorMode, setRawColorMode] = useState('dark');
+  const systemPrefers = useMediaQuery('(prefers-color-scheme: dark)');
+  const firstRender = useRef(true);
+  const firstSysCheck = useRef(true);
 
   const setColorMode = (value: string) => {
     setRawColorMode(value);
     window.localStorage.setItem('color-mode', value);
   };
+
+  useEffect(() => {
+    if (firstRender.current) {
+      const osTheme = systemPrefers ? 'dark' : 'light';
+      const userTheme = window.localStorage.getItem('color-mode');
+      const theme = userTheme || osTheme;
+      setRawColorMode(theme);
+      firstRender.current = false;
+    } else {
+      if (firstSysCheck.current) {
+        firstSysCheck.current = false;
+        return;
+      }
+      setRawColorMode(systemPrefers ? 'dark' : 'light');
+    }
+  }, [systemPrefers]);
 
   return (
     <ColorModeContext.Provider value={{ colorMode, setColorMode }}>

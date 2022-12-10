@@ -14,6 +14,13 @@ const Main = styled.div`
   align-items: center;
 `;
 
+const Button = styled.button`
+  background: ${({ theme }) => theme.background};
+  color: ${({ theme }) => theme.text};
+  padding: 1rem;
+  border-radius: 4px;
+`;
+
 const Footer = styled.div`
   display: flex;
   flex: 1;
@@ -110,4 +117,4 @@ const Logo = styled.span`
   margin-left: 0.5rem;
 `;
 
-export { Container, Main, Footer, Title, Description, Code, Grid, Card, Logo };
+export { Container, Main, Button, Footer, Title, Description, Code, Grid, Card, Logo };

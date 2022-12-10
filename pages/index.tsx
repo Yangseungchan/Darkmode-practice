@@ -1,8 +1,10 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import { useColorModeContext } from '../components/ColorModeContext';
 import {
   Container,
   Main,
+  Button,
   Title,
   Description,
   Grid,
@@ -13,6 +15,8 @@ import {
 } from '../styles/styles';
 
 export default function Home() {
+  const { colorMode, setColorMode } = useColorModeContext();
+
   return (
     <Container>
       <Head>
@@ -25,6 +29,10 @@ export default function Home() {
         <Title>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </Title>
+
+        <Button onClick={() => setColorMode(colorMode === 'dark' ? 'light' : 'dark')}>
+          테마 변경
+        </Button>
 
         <Description>
           Get started by editing <Code>pages/index.tsx</Code>
