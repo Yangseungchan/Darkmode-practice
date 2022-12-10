@@ -1,5 +1,4 @@
-import { ThemeProvider, Theme } from '@emotion/react';
-import { isWhiteSpaceLike } from 'typescript';
+import { Theme } from '@emotion/react';
 
 const lightTheme: Theme = {
   mode: 'light',
