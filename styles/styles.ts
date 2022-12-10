@@ -15,8 +15,8 @@ const Main = styled.div`
 `;
 
 const Button = styled.button`
-  background: ${({ theme }) => theme.background};
-  color: ${({ theme }) => theme.text};
+  background: var(--background-color);
+  color: var(--text-color);
   padding: 1rem;
   border-radius: 4px;
 `;
@@ -25,7 +25,7 @@ const Footer = styled.div`
   display: flex;
   flex: 1;
   padding: 2rem 0;
-  border-top: 1px solid ${({ theme }) => theme.borderColor};
+  border-top: 1px solid var(--border-color);
   justify-content: center;
   align-items: center;
 
@@ -61,7 +61,7 @@ const Description = styled.p`
 `;
 
 const Code = styled.code`
-  background: ${({ theme }) => theme.background};
+  background: var(--background-color);
   border-radius: 5px;
   padding: 0.75rem;
   font-size: 1.1rem;

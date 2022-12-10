@@ -1,22 +1,39 @@
-import { ReactNode, createContext, useEffect, useRef, useContext, useState } from 'react';
+import {
+  ReactNode,
+  createContext,
+  useEffect,
+  useRef,
+  useContext,
+  useState,
+  useCallback,
+} from 'react';
 import useMediaQuery from '../hooks/useMediaQuery';
+import { COLOR_MODE_KEY, themeProperties } from '../styles/theme';
 
 interface ColorModeContextValue {
-  colorMode: string | null;
-  setColorMode: (value: string) => void;
+  colorMode: string | undefined;
+  setColorMode: (value: 'light' | 'dark') => void;
 }
 
 const ColorModeContext = createContext<ColorModeContextValue | null>(null);
 
 const ColorModeProvider = ({ children }: { children: ReactNode }) => {
-  const [colorMode, setRawColorMode] = useState('dark');
+  const [colorMode, setRawColorMode] = useState<string | undefined>(undefined);
   const systemPrefers = useMediaQuery('(prefers-color-scheme: dark)');
   const firstRender = useRef(true);
 
-  const setColorMode = (value: string) => {
+  const setColorMode = useCallback((value: 'light' | 'dark') => {
+    const root = window.document.documentElement;
+    localStorage.setItem(COLOR_MODE_KEY, value);
+
+    Object.entries(themeProperties).forEach(([name, colorByTheme]) => {
+      const cssVarName = `--${name}`;
+      root.style.setProperty(cssVarName, colorByTheme[value]);
+    });
+
     setRawColorMode(value);
     window.localStorage.setItem('color-mode', value);
-  };
+  }, []);
 
   useEffect(() => {
     if (firstRender.current) {
@@ -26,7 +43,7 @@ const ColorModeProvider = ({ children }: { children: ReactNode }) => {
       setRawColorMode(theme);
       firstRender.current = false;
     } else {
-      setRawColorMode(systemPrefers ? 'dark' : 'light');
+      setColorMode(systemPrefers ? 'dark' : 'light');
     }
   }, [systemPrefers]);
 
