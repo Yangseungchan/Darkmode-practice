@@ -12,7 +12,6 @@ const ColorModeProvider = ({ children }: { children: ReactNode }) => {
   const [colorMode, setRawColorMode] = useState('dark');
   const systemPrefers = useMediaQuery('(prefers-color-scheme: dark)');
   const firstRender = useRef(true);
-  const firstSysCheck = useRef(true);
 
   const setColorMode = (value: string) => {
     setRawColorMode(value);
@@ -27,10 +26,6 @@ const ColorModeProvider = ({ children }: { children: ReactNode }) => {
       setRawColorMode(theme);
       firstRender.current = false;
     } else {
-      if (firstSysCheck.current) {
-        firstSysCheck.current = false;
-        return;
-      }
       setRawColorMode(systemPrefers ? 'dark' : 'light');
     }
   }, [systemPrefers]);
