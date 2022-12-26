@@ -2,12 +2,28 @@
 
 ## 설명
 
+
 `Next.js`와 `Emotion`으로 구현한 다크모드 입니다. 구현사항은 다음과 같습니다.
 
 - 시스템 선호도에 따라 사이트 내 테마 변경
 - 버튼을 클릭하여 테마 변경
 - 테마 변경 시 로컬스토리지에 지정한 테마값을 저장
 - **새로고침 시 깜빡임 없음**
+
+## 개선작업 전후 비교
+
+<table>
+   <tr>
+     <td align="center" width="50%">깜빡임 개선 전</td>
+     <td align="center" width="50%">깜빡임 개선 후</td>
+   </tr>
+   <tr>
+     <td><img src="https://user-images.githubusercontent.com/38908080/209507264-daeb0546-4189-4642-9dd1-c40c65ed7c1b.gif"/></td>
+     <td><img src="https://user-images.githubusercontent.com/38908080/209507285-cceb9bb7-a6ce-4c99-8909-300fa2f9165f.gif"/></td>
+   </tr>
+</table>
+
+
 
 ## 개발 환경
 
